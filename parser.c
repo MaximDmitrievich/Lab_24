@@ -25,6 +25,8 @@ void parser(Stack *stack)
 		}
 		if (c == '+' || c == '-' || c == '^' || c == '*' || c == ':' || c == '(' || c == ')') {
 			if (string != NULL) {
+				string = realloc(string, sizeof(char) * ++k);
+				string[k - 1] = '\0';
 				node->tok.value = atoi(string);
 				stack_push(stack, node);
 				free(string);
