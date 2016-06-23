@@ -20,7 +20,7 @@ Stack *stack_create()
 		return NULL;
 	}
 	stack->size = STACK_INITIAL_SIZE;
-	stack->data = (Node *) malloc(sizeof(Node) * stack->size);
+	stack->data = (Node *) malloc(sizeof(Node) * stack->size + 1);
 	if (stack->data == NULL) {
 		return NULL;
 	}

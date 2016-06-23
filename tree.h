@@ -25,5 +25,5 @@ void build_tree(Tree *tree, Stack *stack);
 void RLR_tree(Tree *tree);
 int RLR_sum_tree(Tree *tree);
 void tree_destroy(Tree *tree);
-void reorganization(Tree *tree);
+void reorganization(Node *node);
 #endif

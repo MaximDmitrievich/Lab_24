@@ -33,35 +33,49 @@ int pow(int x, int y)
 
 bool is_sum(Node *node)
 {
-	if (node->tok.op == '+') {
+	if (node->tok.op == '+\0') {
 		return true;
 	} else return false;
 }
 
 bool is_mult(Node *node)
 {
-	if (node->tok.op == '*') {
+	if (node->tok.op == '*\0') {
 		return true;
 	} else return false;
 }
 
 bool is_pow(Node *node)
 {
-	if (node->tok.op == '^') {
+	if (node->tok.op == '^\0') {
 		return true;
 	} else return false;
 }
 
 bool is_div(Node *node)
 {
-	if (node->tok.op == ':') {
+	if (node->tok.op == ':\0') {
 		return true;
 	} else return false;
 }
 
 bool is_minus(Node *node)
 {
-	if (node->tok.op == '-') {
+	if (node->tok.op == '-\0') {
+		return true;
+	} else return false;
+}
+
+bool is_left_bracket(Node *node)
+{
+	if (node->tok.op == '(\0') {
+		return true;
+	} else return false;
+}
+
+bool is_right_bracket(Node *node)
+{
+	if (node->tok.op == ')\0') {
 		return true;
 	} else return false;
 }
@@ -80,33 +94,19 @@ bool is_terminal(Node *node)
 	} else return false;
 }
 
-bool is_left_bracket(Node *node)
-{
-	if (node->tok.op == '(') {
-		return true;
-	} else return false;
-}
-
-bool is_right_bracket(Node *node)
-{
-	if (node->tok.op == ')') {
-		return true;
-	} else return false;
-}
-
 int get_prior(Node *node)
 {
 	if (is_left_bracket(node) || is_right_bracket(node)) {
-		return 4;
+		return 1;
 	}
 	if (is_pow(node)) {
-		return 3;
+		return 4;
 	}
 	if (is_mult(node) || is_div(node)) {
-		return 2;
+		return 3;
 	}
 	if (is_sum(node) || is_minus(node)) {
-		return 1;
+		return 2;
 	}
 }
 
@@ -130,18 +130,21 @@ void polish(Stack *stack)
 	while (!stack_is_empty(out)) {
 		if (is_left_bracket(stack_top(out))) {
 			stack_push(stack, stack_pop(out));
+			continue;
 		}
 		if (is_terminal(stack_top(out))) {
 			stack_push(sub, stack_pop(out));
+			continue;
 		}
 		if (is_op(stack_top(out))) {
 			Node *top_in = stack_top(out);
 			Node *top_stack = stack_top(stack);
-			while ((get_prior(top_stack) < get_prior(top_in)) || ((get_assoc(top_in) == 'L') && (get_prior(top_stack) == get_prior(top_in)))) {
+			while ((get_prior(top_stack) > get_prior(top_in)) || ((get_assoc(top_in) == 'L') && (get_prior(top_stack) == get_prior(top_in)))) {
 				stack_push(sub, stack_pop(stack));
 				top_stack = stack_top(stack);
 			}
 			stack_push(stack, stack_pop(out));
+			continue;
 		}
 		if (is_right_bracket(stack_top(out))) {
 			while (!is_left_bracket(stack_top(stack))) {
@@ -220,7 +223,9 @@ int RLR_sum(Node *node)
 	if (is_pow(node)) {
 		return pow(RLR_sum(node->left), RLR_sum(node->right));
 	}
-	return node->tok.value;
+	if (!is_op(node)) {
+		return node->tok.value;
+	}
 }
 
 int RLR_sum_tree(Tree *tree)
@@ -248,12 +253,9 @@ void tree_destroy(Tree *tree)
 	}
 }
 
-void reorganization(Tree *tree)
+void reorganization(Node *node)
 {
-	Node *node = tree->root;
-	if (is_sum(node)) {
-		if (is_op(node->left) && is_op(node->right)) {
+	if (is_op(node)) {
 
-		}
 	}
 }

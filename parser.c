@@ -23,7 +23,7 @@ void parser(Stack *stack)
 			node->tok.varname = c;
 			stack_push(stack, node);
 		}
-		if (c == '+' || c == '-' || c == '^' || c == '*' || c == ':' || c == '(' || c == ')') {
+		if (c == '+\0' || c == '-\0' || c == '^\0' || c == '*\0' || c == ':\0' || c == '(\0' || c == ')\0') {
 			if (string != NULL) {
 				string = realloc(string, sizeof(char) * ++k);
 				string[k - 1] = '\0';

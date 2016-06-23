@@ -14,7 +14,7 @@ int main(void)
 	Stack *stack = stack_create();
 	Tree *tree;
 	tree_init(&tree);
-	printf("\n\n=========================\n\n default - insert\n\n t - print tree\n\n e - print expression in polis\n\n r - result of the expression\n\n q - quit\n\n =========================\n\n");
+	printf("\n\n=========================\n\n default - insert\n\n t - print tree\n\n e - print expression in polis\n\n r - result of the expression\n\nreorganization - o\n\n q - quit\n\n =========================\n\n");
 	while (true) {
 		char cmd = 0;
 		scanf("%c", &cmd);
@@ -35,6 +35,10 @@ int main(void)
 				break;
 			case 'r':
 				printf("%d\n", RLR_sum_tree(&tree));
+				break;
+			case 'o':
+				reorganization(tree->root);
+				RLR_tree(&tree);
 				break;
 			case 'q':
 				if (tree->root != NULL) {
